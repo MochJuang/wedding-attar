@@ -13,8 +13,11 @@ import {
     XCircle,
     HelpCircle,
 } from 'lucide-react'
-import { useState } from 'react';
+import {useEffect, useState} from 'react';
 import { formatEventDate } from '@/lib/formatEventDate';
+import { collection, getDocs, addDoc, onSnapshot, orderBy, query, serverTimestamp } from "firebase/firestore";
+import { db } from "./../firebase.js";
+
 
 export default function Wishes() {
     const [showConfetti, setShowConfetti] = useState(false);
@@ -23,69 +26,67 @@ export default function Wishes() {
     const [attendance, setAttendance] = useState('');
     const [isOpen, setIsOpen] = useState(false);
     const [userName, setUserName] = useState('');
-
-    const firebaseConfig = {
-        apiKey: 'YOUR_API_KEY',
-        authDomain: 'YOUR_AUTH_DOMAIN',
-        projectId: 'YOUR_PROJECT_ID',
-        // ...other config
-    };
+    const [wishes, setWishes] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     const options = [
         { value: 'ATTENDING', label: 'Ya, saya akan hadir' },
         { value: 'NOT_ATTENDING', label: 'Tidak, saya tidak bisa hadir' },
         { value: 'MAYBE', label: 'Mungkin, saya akan konfirmasi nanti' }
     ];
-    // Example wishes - replace with your actual data
-    const [wishes, setWishes] = useState([
-        {
-            id: 1,
-            name: "John Doe",
-            message: "Wishing you both a lifetime of love, laughter, and happiness! 🎉",
-            timestamp: "2024-12-24T23:20:00Z",
-            attending: "attending"
-        },
-        {
-            id: 2,
-            name: "Natalie",
-            message: "Wishing you both a lifetime of love, laughter, and happiness! 🎉",
-            timestamp: "2024-12-24T23:20:00Z",
-            attending: "attending"
-        },
-        {
-            id: 3,
-            name: "Abdur Rofi",
-            message: "Congratulations on your special day! May Allah bless your union! 🤲",
-            timestamp: "2024-12-25T23:08:09Z",
-            attending: "maybe"
-        }
-    ]);
+
+    // Real-time listener for wishes
+    useEffect(() => {
+        const q = query(collection(db, "wishes"), orderBy("timestamp", "desc"));
+
+        const unsubscribe = onSnapshot(q, (querySnapshot) => {
+            const newData = querySnapshot.docs.map((doc) => ({
+                ...doc.data(),
+                id: doc.id,
+                // Convert Firestore timestamp to ISO string
+                timestamp: doc.data().timestamp?.toDate()?.toISOString() || doc.data().createdAt
+            }));
+            setWishes(newData);
+            setLoading(false);
+        }, (error) => {
+            console.error("Error fetching wishes:", error);
+            setLoading(false);
+        });
+
+        return () => unsubscribe();
+    }, []);
 
     const handleSubmitWish = async (e) => {
         e.preventDefault();
         if (!newWish.trim() || !userName.trim() || !attendance) return;
 
         setIsSubmitting(true);
-        // Simulating API call
-        await new Promise(resolve => setTimeout(resolve, 1000));
 
-        const newWishObj = {
-            id: wishes.length + 1,
-            name: userName.trim(),
-            message: newWish.trim(),
-            attending: attendance.toLowerCase().replace('_', '-'),
-            timestamp: new Date().toISOString()
-        };
+        try {
+            const wishData = {
+                name: userName.trim(),
+                message: newWish.trim(),
+                attending: attendance.toLowerCase().replace('_', '-'),
+                timestamp: serverTimestamp(),
+                createdAt: new Date().toISOString()
+            };
 
-        console.log(newWishObj);
-        setWishes(prev => [newWishObj, ...prev]);
-        setNewWish('');
-        setUserName('');
-        setAttendance('');
+            await addDoc(collection(db, "wishes"), wishData);
+
+            // Clear form
+            setNewWish('');
+            setUserName('');
+            setAttendance('');
+            setShowConfetti(true);
+            setTimeout(() => setShowConfetti(false), 3000);
+        } catch (error) {
+            console.error("Error adding wish:", error);
+            alert('Gagal mengirim pesan. Silakan coba lagi.');
+        }
+
         setIsSubmitting(false);
-        setShowConfetti(true);
-        setTimeout(() => setShowConfetti(false), 3000);
     };
+
     const getAttendanceIcon = (status) => {
         switch (status) {
             case 'attending':
@@ -142,69 +143,82 @@ export default function Wishes() {
 
                 {/* Wishes List */}
                 <div className="max-w-2xl mx-auto space-y-6">
-                    <AnimatePresence>
-                        <Marquee speed={20}
-                            gradient={undefined}
-                            className="[--duration:20s] py-2">
-                            {wishes.map((wish, index) => (
-                                <motion.div
-                                    key={wish.id}
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    exit={{ opacity: 0, y: -20 }}
-                                    transition={{ delay: index * 0.1 }}
-                                    className="group relative w-[280px]"
-                                >
-                                    {/* Background gradient */}
-                                    <div className="absolute inset-0 bg-gradient-to-r from-rose-100/50 to-pink-100/50 rounded-xl transform transition-transform group-hover:scale-[1.02] duration-300" />
+                    {loading ? (
+                        <div className="text-center py-8">
+                            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-rose-500 mx-auto"></div>
+                            <p className="text-gray-500 mt-2">Memuat pesan...</p>
+                        </div>
+                    ) : wishes.length > 0 ? (
+                        <AnimatePresence>
+                            <Marquee speed={20}
+                                gradient={undefined}
+                                className="[--duration:20s] py-2">
+                                {wishes.map((wish, index) => (
+                                    <motion.div
+                                        key={wish.id}
+                                        initial={{ opacity: 0, y: 20 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        exit={{ opacity: 0, y: -20 }}
+                                        transition={{ delay: index * 0.1 }}
+                                        className="group relative w-[280px]"
+                                    >
+                                        {/* Background gradient */}
+                                        <div className="absolute inset-0 bg-gradient-to-r from-rose-100/50 to-pink-100/50 rounded-xl transform transition-transform group-hover:scale-[1.02] duration-300" />
 
-                                    {/* Card content */}
-                                    <div className="relative backdrop-blur-sm bg-white/80 p-4 rounded-xl border border-rose-100/50 shadow-md">
-                                        {/* Header */}
-                                        <div className="flex items-start space-x-3 mb-2">
-                                            {/* Avatar */}
-                                            <div className="flex-shrink-0">
-                                                <div className="w-8 h-8 rounded-full bg-gradient-to-r from-rose-400 to-pink-400 flex items-center justify-center text-white text-sm font-medium">
-                                                    {wish.name[0].toUpperCase()}
+                                        {/* Card content */}
+                                        <div className="relative backdrop-blur-sm bg-white/80 p-4 rounded-xl border border-rose-100/50 shadow-md">
+                                            {/* Header */}
+                                            <div className="flex items-start space-x-3 mb-2">
+                                                {/* Avatar */}
+                                                <div className="flex-shrink-0">
+                                                    <div className="w-8 h-8 rounded-full bg-gradient-to-r from-rose-400 to-pink-400 flex items-center justify-center text-white text-sm font-medium">
+                                                        {wish.name[0].toUpperCase()}
+                                                    </div>
+                                                </div>
+
+                                                {/* Name, Time, and Attendance */}
+                                                <div className="flex-1 min-w-0">
+                                                    <div className="flex items-center space-x-2">
+                                                        <h4 className="font-medium text-gray-800 text-sm truncate">
+                                                            {wish.name}
+                                                        </h4>
+                                                        {getAttendanceIcon(wish.attending)}
+                                                    </div>
+                                                    <div className="flex items-center space-x-1 text-gray-500 text-xs">
+                                                        <Clock className="w-3 h-3" />
+                                                        <time className="truncate">
+                                                            {wish.timestamp ? formatEventDate(wish.timestamp) : 'Baru saja'}
+                                                        </time>
+                                                    </div>
                                                 </div>
                                             </div>
 
-                                            {/* Name, Time, and Attendance */}
-                                            <div className="flex-1 min-w-0">
-                                                <div className="flex items-center space-x-2">
-                                                    <h4 className="font-medium text-gray-800 text-sm truncate">
-                                                        {wish.name}
-                                                    </h4>
-                                                    {getAttendanceIcon(wish.attending)}
+                                            {/* Message */}
+                                            <p className="text-gray-600 text-sm leading-relaxed mb-2 line-clamp-3">
+                                                {wish.message}
+                                            </p>
+
+                                            {/* Optional: Time indicator for recent messages */}
+                                            {wish.timestamp && Date.now() - new Date(wish.timestamp).getTime() < 3600000 && (
+                                                <div className="absolute top-2 right-2">
+                                                    <span className="px-2 py-1 rounded-full bg-rose-100 text-rose-600 text-xs font-medium">
+                                                        New
+                                                    </span>
                                                 </div>
-                                                <div className="flex items-center space-x-1 text-gray-500 text-xs">
-                                                    <Clock className="w-3 h-3" />
-                                                    <time className="truncate">
-                                                        {formatEventDate(wish.timestamp)}
-                                                    </time>
-                                                </div>
-                                            </div>
+                                            )}
                                         </div>
-
-                                        {/* Message */}
-                                        <p className="text-gray-600 text-sm leading-relaxed mb-2 line-clamp-3">
-                                            {wish.message}
-                                        </p>
-
-                                        {/* Optional: Time indicator for recent messages */}
-                                        {Date.now() - new Date(wish.timestamp).getTime() < 3600000 && (
-                                            <div className="absolute top-2 right-2">
-                                                <span className="px-2 py-1 rounded-full bg-rose-100 text-rose-600 text-xs font-medium">
-                                                    New
-                                                </span>
-                                            </div>
-                                        )}
-                                    </div>
-                                </motion.div>
-                            ))}
-                        </Marquee>
-                    </AnimatePresence>
+                                    </motion.div>
+                                ))}
+                            </Marquee>
+                        </AnimatePresence>
+                    ) : (
+                        <div className="text-center py-8">
+                            <MessageCircle className="w-12 h-12 text-gray-300 mx-auto mb-2" />
+                            <p className="text-gray-500">Belum ada pesan. Jadilah yang pertama!</p>
+                        </div>
+                    )}
                 </div>
+
                 {/* Wishes Form */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
