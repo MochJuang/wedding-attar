@@ -6,22 +6,7 @@ import { formatEventDate } from '@/lib/formatEventDate';
 import { safeBase64 } from '@/lib/base64';
 
 export default function Hero() {
-    const [guestName, setGuestName] = useState('');
 
-    useEffect(() => {
-        const urlParams = new URLSearchParams(window.location.search);
-        const guestParam = urlParams.get('guest');
-
-        if (guestParam) {
-            try {
-                // const decodedName = safeBase64.decode(guestParam);
-                setGuestName(guestParam);
-            } catch (error) {
-                console.error('Error decoding guest name:', error);
-                setGuestName('');
-            }
-        }
-    }, []);
 
     const CountdownTimer = ({ targetDate }) => {
         const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
@@ -216,22 +201,7 @@ export default function Hero() {
                                     <div className="h-px w-8 sm:w-12 bg-rose-200/50" />
                                 </div>
 
-                                <motion.div
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: 1 }}
-                                    transition={{ delay: 1.1 }}
-                                    className="space-y-2"
-                                >
-                                    <p className="text-gray-500 font-serif italic text-sm">
-                                        Kepada Yth.
-                                    </p>
-                                    <p className="text-gray-600 font-medium text-sm">
-                                        Bapak/Ibu/Saudara/i
-                                    </p>
-                                    <p className="text-rose-500 font-semibold text-lg">
-                                        {guestName ? guestName : "Tamu"}
-                                    </p>
-                                </motion.div>
+
                             </div>
 
                             <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-px">
