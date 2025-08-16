@@ -72,14 +72,14 @@ export default function Gifts() {
                         className="space-y-4 max-w-md mx-auto"
                     >
                         {/* Arabic InsyaAllah */}
-                        <p className="font-arabic text-xl text-gray-800">
-                            إن شاء الله
-                        </p>
+                        {/*<p className="font-arabic text-xl text-gray-800">*/}
+                        {/*    إن شاء الله*/}
+                        {/*</p>*/}
 
                         {/* Main Message */}
-                        <p className="text-gray-600 leading-relaxed">
-                            Insya Allah, Kami Akan Menyalurkan Semua Hadiah yang Diberikan ke Beberapa Masjid dan Lembaga yang Membutuhkan
-                        </p>
+                        {/*<p className="text-gray-600 leading-relaxed">*/}
+                        {/*    Insya Allah, Kami Akan Menyalurkan Semua Hadiah yang Diberikan ke Beberapa Masjid dan Lembaga yang Membutuhkan*/}
+                        {/*</p>*/}
 
                         {/* Arabic Dua */}
                         <div className="space-y-2">

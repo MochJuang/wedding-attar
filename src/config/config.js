@@ -1,38 +1,38 @@
 // Nanti convert ke Bahasa Indonesia
 const config = {
   data: {
-    title: "Pernikahan Fulan & Fulana", // Nanti ini otomatis
+    title: "Attar & Rahma", // Nanti ini otomatis
     description:
       "Kami akan menikah dan mengundang Anda untuk turut merayakan momen istimewa ini.", // Nanti ini dibikin random
-    groomName: "Fulan",
-    brideName: "Fulana",
-    parentGroom: "Bapak Groom & Ibu Groom",
-    parentBride: "Bapak Bride & Ibu Bride",
-    date: "2024-12-24",
-    maps_url: "https://goo.gl/maps/abcdef",
+    groomName: "Mohamad Aldy Al Attar (Attar)",
+    brideName: "Rahma Fadiatunnajmi (Fadya)",
+    parentGroom: "Putra Pertama Dari Bapak Dodi Supandi dan Ibu Atik Asiyah",
+    parentBride: "Putri Pertama Dari Bapak Edi Rustandi dan Ibu Elis Nuraeni",
+    date: "2025-08-30",
+    maps_url: "https://maps.app.goo.gl/cN8rpfNDLqpV7v9p9",
     maps_embed:
-      "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.0000000000005!2d106.8270733147699!3d-6.175392995514422!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f4f1b6d7b1e7%3A0x2e69f4f1b6d7b1e7!2sMonumen%20Nasional!5e0!3m2!1sid!2sid!4v1633666820004!5m2!1sid!2sid",
-    time: "16:16 - 17:30 WIB",
-    location: "Grand Ballroom, Hotel Majesty",
-    address: "Jl. Jend. Sudirman No.1, Jakarta",
+      "https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d4767.322285193636!2d107.2139167!3d-6.7148333000000004!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zNsKwNDInNTMuNCJTIDEwN8KwMTInNTAuMSJF!5e1!3m2!1sid!2sid!4v1755352382588!5m2!1sid!2sid",
+    time: "08.00 - Selesai",
+    location: "Rumah Mempelai Wanita",
+    address: "Kp. Pasucen RT. 02 RW. 04 Desa Sukagalih Kecamatan Cikalong Kulon Kabupaten Cianjur ( Samping SDN 1 Cikalong Kulon )",
     ogImage: "/images/og-image.jpg",
     favicon: "/images/favicon.ico",
     agenda: [
       {
         title: "Akad Nikah",
-        date: "2024-12-24",
-        startTime: "16:16",
-        endTime: "17:30",
-        location: "Grand Ballroom, Hotel Majesty",
-        address: "Jl. Jend. Sudirman No.1, Jakarta",
+        date: "2025-08-30",
+        startTime: "08:00",
+        endTime: "10:00",
+        location: "Masjid Agung Baiturrahman",
+        address: "Kp. Pasucen RT. 02 RW. 04 Desa Sukagalih Kecamatan Cikalong Kulon Kabupaten Cianjur ( Samping SDN 1 Cikalong Kulon )",
       },
       {
         title: "Resepsi Nikah",
-        date: "2024-12-24",
-        startTime: "16:16",
-        endTime: "17:30",
-        location: "Grand Ballroom, Hotel Majesty",
-        address: "Jl. Jend. Sudirman No.1, Jakarta",
+        date: "2025-08-30",
+        startTime: "10:00",
+        endTime: "Selesai",
+        location: "Kediaman Mempelai Wanita",
+        address: "Kp. Pasucen RT. 02 RW. 04 Desa Sukagalih Kecamatan Cikalong Kulon Kabupaten Cianjur ( Samping SDN 1 Cikalong Kulon )",
       }
     ],
     audio: {
@@ -44,13 +44,13 @@ const config = {
     banks: [
       {
         bank: "Bank Central Asia",
-        accountNumber: "1234567890",
-        accountName: "FULAN",
+        accountNumber: "1832113489",
+        accountName: "MOHAMAD ALDY AL ATTAR",
       },
       {
-        bank: "Bank Mandiri",
-        accountNumber: "0987654321",
-        accountName: "FULANA",
+        bank: "DANA",
+        accountNumber: "085795402914",
+        accountName: "RAHMA FADIATUNNAJMI",
       }
     ]
   }

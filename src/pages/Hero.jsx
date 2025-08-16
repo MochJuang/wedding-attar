@@ -14,8 +14,8 @@ export default function Hero() {
 
         if (guestParam) {
             try {
-                const decodedName = safeBase64.decode(guestParam);
-                setGuestName(decodedName);
+                // const decodedName = safeBase64.decode(guestParam);
+                setGuestName(guestParam);
             } catch (error) {
                 console.error('Error decoding guest name:', error);
                 setGuestName('');
@@ -126,30 +126,57 @@ export default function Hero() {
 
                     <div className="space-y-4">
                         <motion.p
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ delay: 0.4 }}
+                            initial={{opacity: 0}}
+                            animate={{opacity: 1}}
+                            transition={{delay: 0.4}}
                             className="text-gray-500 font-light italic text-base sm:text-lg"
                         >
                             InsyaAllah Kami Akan Menikah
                         </motion.p>
-                        <motion.h2
-                            initial={{ scale: 0.8, opacity: 0 }}
-                            animate={{ scale: 1, opacity: 1 }}
-                            transition={{ delay: 0.6 }}
+
+                        <motion.div
+                            initial={{opacity: 0}}
+                            animate={{opacity: 1}}
+                            transition={{delay: 0.5}}
+                            className="text-center space-y-4 font-serif bg-clip-text text-transparent bg-gradient-to-r from-rose-600 to-pink-600"
+                        >
+                            <h1 className="text-3xl sm:text-4xl md:text-5xl font-serif  leading-tight">
+                                <p>{config.data.groomName}</p>
+                            </h1>
+                        </motion.div>
+                        <p>{config.data.parentGroom}</p>
+
+                        <motion.div
+                            initial={{scale: 0.8, opacity: 0}}
+                            animate={{scale: 1, opacity: 1}}
+                            transition={{delay: 0.6}}
                             className="text-3xl sm:text-5xl font-serif bg-clip-text text-transparent bg-gradient-to-r from-rose-600 to-pink-600"
                         >
-                            {config.data.groomName} & {config.data.brideName}
-                        </motion.h2>
+                            <span className="text-rose-400 mx-2 sm:mx-3">&</span> <br/>
+                        </motion.div>
+
+                        <motion.div
+                            initial={{opacity: 0}}
+                            animate={{opacity: 1}}
+                            transition={{delay: 0.5}}
+                            className="text-center space-y-4 font-serif bg-clip-text text-transparent bg-gradient-to-r from-rose-600 to-pink-600"
+                        >
+                            <h1 className="text-3xl sm:text-4xl md:text-5xl font-serif  leading-tight">
+                                <p>{config.data.brideName}</p>
+                            </h1>
+                        </motion.div>
+                        <p>{config.data.parentBride}</p>
+
                     </div>
 
                     <motion.div
-                        initial={{ y: 20, opacity: 0 }}
-                        animate={{ y: 0, opacity: 1 }}
-                        transition={{ delay: 0.8 }}
+                        initial={{y: 20, opacity: 0}}
+                        animate={{y: 0, opacity: 1}}
+                        transition={{delay: 0.8}}
                         className="relative max-w-md mx-auto"
                     >
-                        <div className="absolute inset-0 bg-gradient-to-b from-rose-50/50 to-white/50 backdrop-blur-md rounded-2xl" />
+                        <div
+                            className="absolute inset-0 bg-gradient-to-b from-rose-50/50 to-white/50 backdrop-blur-md rounded-2xl"/>
 
                         <div className="relative px-4 sm:px-8 py-8 sm:py-10 rounded-2xl border border-rose-100/50">
                             <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-px">

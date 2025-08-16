@@ -40,19 +40,19 @@ const LandingPage = ({ onOpenInvitation }) => (
             transition={{ delay: 0.3 }}
             className="flex flex-col gap-4 mb-6 sm:mb-8 items-center"
           >
-            <div className="inline-flex flex-col items-center space-y-1 bg-white/80 px-4 sm:px-6 py-2 sm:py-3 rounded-xl">
-              <Calendar className="w-5 h-5 text-rose-400" />
-              <p className="text-gray-700 font-medium">
-                {formatEventDate(config.data.date)}
-              </p>
-            </div>
+            {/*<div className="inline-flex mr-3 items-center space-y-1 bg-white/80 px-4 sm:px-6 py-2 sm:py-3 rounded-xl">*/}
+            {/*  <Calendar className="w-5 h-5 text-rose-400" />*/}
+            {/*  <p className="text-gray-700 font-medium">*/}
+            {/*    {formatEventDate(config.data.date)}*/}
+            {/*  </p>*/}
+            {/*</div>*/}
 
-            <div className="inline-flex flex-col items-center space-y-1 bg-white/80 px-4 sm:px-6 py-2 sm:py-3 rounded-xl">
-              <Clock className="w-5 h-5 text-rose-400" />
-              <p className="text-gray-700 font-medium">
-                {config.data.time}
-              </p>
-            </div>
+            {/*<div className="inline-flex flex-col items-center space-y-1 bg-white/80 px-4 sm:px-6 py-2 sm:py-3 rounded-xl">*/}
+            {/*  <Clock className="w-5 h-5 text-rose-400" />*/}
+            {/*  <p className="text-gray-700 font-medium">*/}
+            {/*    {config.data.time}*/}
+            {/*  </p>*/}
+            {/*</div>*/}
           </motion.div>
 
           {/* Couple Names */}
@@ -64,11 +64,79 @@ const LandingPage = ({ onOpenInvitation }) => (
           >
             <div className="space-y-2">
               <h1 className="text-3xl sm:text-4xl md:text-5xl font-serif text-gray-800 leading-tight">
-                {config.data.groomName}
-                <span className="text-rose-400 mx-2 sm:mx-3">&</span>
-                {config.data.brideName}
+                <p>{config.data.groomName}</p>
               </h1>
-              <div className="h-px w-16 sm:w-24 mx-auto bg-rose-200" />
+              <h3>{config.data.parentGroom}</h3>
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-serif text-gray-800 leading-tight">
+                <span className="text-rose-400 mx-2 sm:mx-3">&</span> <br/>
+              </h1>
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-serif text-gray-800 leading-tight">
+                <p>{config.data.brideName}</p>
+              </h1>
+              <h3>{config.data.parentBride}</h3>
+
+
+              <div className="h-px w-16 sm:w-24 mx-auto bg-rose-200"/>
+              <p></p>
+              <p></p>
+              {/* Couple Photos */}
+              <motion.div
+                  initial={{opacity: 0, y: 20}}
+                  animate={{opacity: 1, y: 0}}
+                  transition={{delay: 0.7}}
+                  className="flex justify-center gap-4 sm:gap-6 mt-6"
+              >
+                {/* Groom Photo */}
+                <motion.div
+                    whileHover={{scale: 1.05}}
+                    className="relative"
+                >
+                  <img
+                      src="/images/suami.jpeg"
+                      alt={config.data.groomName}
+                      className="img-thumbnail rounded-circle"
+                      style={{
+                        width: '100px',
+                        height: '120px',
+                        objectFit: 'cover'
+                      }}
+                  />
+                  {/*<div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2">*/}
+                  {/*  <div className="bg-white px-2 py-1 rounded-full shadow-sm border border-rose-100">*/}
+                  {/*    <span className="text-xs text-gray-600 font-medium">Groom</span>*/}
+                  {/*  </div>*/}
+                  {/*</div>*/}
+                </motion.div>
+
+                {/* Heart Icon */}
+                <motion.div
+                    animate={{scale: [1, 1.1, 1]}}
+                    transition={{repeat: Infinity, duration: 2}}
+                    className="flex items-center justify-center"
+                >
+                  {/*<div className="w-8 h-8 sm:w-10 sm:h-10 bg-rose-100 rounded-full flex items-center justify-center">*/}
+                  {/*  <span className="text-rose-500 text-lg sm:text-xl">💕</span>*/}
+                  {/*</div>*/}
+                </motion.div>
+
+                {/* Bride Photo */}
+                <motion.div
+                    whileHover={{scale: 1.05}}
+                    className="relative"
+                >
+                  <img
+                      src="/images/istri.jpeg"
+                      alt={config.data.brideName}
+                      className="img-thumbnail"
+                      style={{
+                        width: '100px',
+                        height: '120px',
+                        objectFit: 'cover'
+                      }}
+                  />
+
+                </motion.div>
+              </motion.div>
             </div>
           </motion.div>
 

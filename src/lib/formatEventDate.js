@@ -20,9 +20,9 @@ export const formatEventDate = (isoString, format = 'full') => {
     const formats = {
         full: {
             weekday: 'long',
-            year: 'numeric',
-            month: 'long',
             day: 'numeric',
+            month: 'long',
+            year: 'numeric',
             timeZone: 'Asia/Jakarta'
         },
         short: {
@@ -84,11 +84,16 @@ export const formatEventDate = (isoString, format = 'full') => {
 
     // Format adjustment for full date
     if (format === 'full') {
-        // Convert "Hari, Tanggal Bulan Tahun" format
-        const parts = formatted.split(', ');
-        if (parts.length === 2) {
-            formatted = `${parts[0]}, ${parts[1]}`;
-        }
+        const dayName = date.toLocaleDateString('en-US', { weekday: 'long', timeZone: 'Asia/Jakarta' });
+        const day = date.toLocaleDateString('en-US', { day: 'numeric', timeZone: 'Asia/Jakarta' });
+        const month = date.toLocaleDateString('en-US', { month: 'long', timeZone: 'Asia/Jakarta' });
+        const year = date.toLocaleDateString('en-US', { year: 'numeric', timeZone: 'Asia/Jakarta' });
+
+        const indonesianDay = daysIndonesian[dayName] || dayName;
+        const indonesianMonth = monthsIndonesian[month] || month;
+
+        return `${indonesianDay}, ${day} ${indonesianMonth} ${year}`;
+
     }
 
     return formatted;
