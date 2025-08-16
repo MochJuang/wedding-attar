@@ -22,6 +22,14 @@ export default function Wishes() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [attendance, setAttendance] = useState('');
     const [isOpen, setIsOpen] = useState(false);
+    const [userName, setUserName] = useState('');
+
+    const firebaseConfig = {
+        apiKey: 'YOUR_API_KEY',
+        authDomain: 'YOUR_AUTH_DOMAIN',
+        projectId: 'YOUR_PROJECT_ID',
+        // ...other config
+    };
 
     const options = [
         { value: 'ATTENDING', label: 'Ya, saya akan hadir' },
@@ -55,7 +63,7 @@ export default function Wishes() {
 
     const handleSubmitWish = async (e) => {
         e.preventDefault();
-        if (!newWish.trim()) return;
+        if (!newWish.trim() || !userName.trim() || !attendance) return;
 
         setIsSubmitting(true);
         // Simulating API call
@@ -63,14 +71,17 @@ export default function Wishes() {
 
         const newWishObj = {
             id: wishes.length + 1,
-            name: "Guest", // Replace with actual user name
-            message: newWish,
-            attend: "attending",
+            name: userName.trim(),
+            message: newWish.trim(),
+            attending: attendance.toLowerCase().replace('_', '-'),
             timestamp: new Date().toISOString()
         };
 
+        console.log(newWishObj);
         setWishes(prev => [newWishObj, ...prev]);
         setNewWish('');
+        setUserName('');
+        setAttendance('');
         setIsSubmitting(false);
         setShowConfetti(true);
         setTimeout(() => setShowConfetti(false), 3000);
@@ -133,7 +144,7 @@ export default function Wishes() {
                 <div className="max-w-2xl mx-auto space-y-6">
                     <AnimatePresence>
                         <Marquee speed={20}
-                            gradient={false}
+                            gradient={undefined}
                             className="[--duration:20s] py-2">
                             {wishes.map((wish, index) => (
                                 <motion.div
@@ -212,6 +223,8 @@ export default function Wishes() {
                                     </div>
                                     <input
                                         type="text"
+                                        value={userName}
+                                        onChange={(e) => setUserName(e.target.value)}
                                         placeholder="Masukan nama kamu..."
                                         className="w-full px-4 py-2.5 rounded-xl bg-white/50 border border-rose-100 focus:border-rose-300 focus:ring focus:ring-rose-200 focus:ring-opacity-50 transition-all duration-200 text-gray-700 placeholder-gray-400"
                                         required
@@ -283,6 +296,8 @@ export default function Wishes() {
                                         <span>Harapan kamu</span>
                                     </div>
                                     <textarea
+                                        value={newWish}
+                                        onChange={(e) => setNewWish(e.target.value)}
                                         placeholder="Kirimkan harapan dan doa untuk kedua mempelai..."
                                         className="w-full h-32 p-4 rounded-xl bg-white/50 border border-rose-100 focus:border-rose-300 focus:ring focus:ring-rose-200 focus:ring-opacity-50 resize-none transition-all duration-200"
                                         required
@@ -297,8 +312,9 @@ export default function Wishes() {
                                 <motion.button
                                     whileHover={{ scale: 1.02 }}
                                     whileTap={{ scale: 0.98 }}
+                                    disabled={isSubmitting || !userName.trim() || !newWish.trim() || !attendance}
                                     className={`flex items-center space-x-2 px-6 py-2.5 rounded-xl text-white font-medium transition-all duration-200
-                    ${isSubmitting
+                    ${isSubmitting || !userName.trim() || !newWish.trim() || !attendance
                                             ? 'bg-gray-300 cursor-not-allowed'
                                             : 'bg-rose-500 hover:bg-rose-600'}`}
                                 >
