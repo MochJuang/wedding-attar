@@ -48,6 +48,11 @@ const config = {
         accountName: "MOHAMAD ALDY AL ATTAR",
       },
       {
+        bank: "Bank Central Asia",
+        accountNumber: "1830963282",
+        accountName: "Edi Rustandi",
+      },
+      {
         bank: "DANA",
         accountNumber: "085795402914",
         accountName: "RAHMA FADIATUNNAJMI",
